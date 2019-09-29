@@ -1,0 +1,22 @@
+language: cpp
+before_script:
+- sudo apt-get install libboost-test-dev -y
+- sudo apt-get install libgtest-dev
+- sudo apt-get install cmake
+- cd /usr/src/gtest
+- sudo cmake .
+- sudo make
+- sudo cp *.a /usr/lib
+- echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+- sudo apt-get update -qq
+script:
+- cd $TRAVIS_BUILD_DIR
+- cmake .
+- cmake --build .
+#- cmake --build . --target test
+- cmake --build . --target package
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+  - curl -T helloworld-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -utibxq:$BINTRAY_API_KEY "https://api.bintray.com/content/tibxq/otus_cpp/otus_cpp_h3/$TRAVIS_BUILD_NUMBER/allocator-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
