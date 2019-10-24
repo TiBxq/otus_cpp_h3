@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <algorithm>
+#include <typeinfo>
 
 #define ENABLE_LOGGING 1
 
@@ -100,7 +101,7 @@ int main(/*int argc, char const *argv[]*/)
 	//------
 	std::cout << "map: " << std::endl;
 
-	auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<int, int>>>();
+	auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>>>();
 	m[3] = 14;
 
 	std::cout << m[3] << std::endl;
