@@ -96,26 +96,18 @@ struct custom_allocator
 
 int main(/*int argc, char const *argv[]*/)
 {
-	//std::cout << "vector: " << std::endl;
+	auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 10>>();
+	for(std::size_t i = 0; i < 10; ++i)
+	{
+		m[i] = i*i;
+	}
 
-	auto v = std::vector<int, custom_allocator<int, 5>>();
-	v.push_back(5);
-	v.push_back(5);
-	v.push_back(5);
-	v.push_back(5);
-	v.push_back(5);
+	for(std::size_t i = 0; i < 10; ++i)
+	{
+		std::cout << "map[" << i << "] = " << m[i] << std::endl;
+	}
 
-
-	//std::cout << v[8] << std::endl;
 	//------
-	/*std::cout << "map: " << std::endl;
-
-	auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 5>>();
-	m[3] = 14;
-
-	std::cout << m[3] << std::endl;
-
-	//------*/
 	//std::cout << std::endl << "*** end of main ***" << std::endl << std::endl;
     return 0;
 }
