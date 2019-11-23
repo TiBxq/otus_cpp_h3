@@ -6,6 +6,8 @@
 #include <map>
 #include <algorithm>
 #include <typeinfo>
+#include <memory>
+#include <functional>
 
 //#define ENABLE_LOGGING 1
 
@@ -89,14 +91,69 @@ struct custom_allocator
 		p->~T();
 	}
 
-//private:
+private:
 	T* m_memory;
 	int m_index;
 };
 
+template<typename T, typename A = std::allocator<T>>
+class my_list
+{
+public:
+	struct my_node
+	{
+		T _data;
+		my_node* _next;
+
+		my_node(T a_data)
+			: _data(a_data)
+			, _next(nullptr)
+		{}
+	};
+
+	typedef typename A::template rebind<my_node>::other node_allocator;
+
+	my_list() : m_first(nullptr)
+	{}
+
+	void add(T elem)
+	{
+		auto* newElem = m_allocator.allocate(1);
+		m_allocator.construct(newElem, elem);
+
+		if(m_first == nullptr)
+		{
+			m_first = newElem;
+		}
+		else
+		{
+			my_node* ptr = m_first;
+			while(ptr->_next != nullptr)
+			{
+				ptr = ptr->_next;
+			}
+
+			ptr->_next = newElem;
+		}
+	}
+
+	void forEach(std::function<void(const T&)> func)
+	{
+		my_node* ptr = m_first;
+		while(ptr != nullptr)
+		{
+			func(ptr->_data);
+			ptr = ptr->_next;
+		}
+	}
+private:
+	my_node* m_first;
+	node_allocator m_allocator;
+};
+
 int main(/*int argc, char const *argv[]*/)
 {
-	auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 10>>();
+	/*auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 10>>();
 	for(std::size_t i = 0; i < 10; ++i)
 	{
 		m[i] = i*i;
@@ -105,7 +162,18 @@ int main(/*int argc, char const *argv[]*/)
 	for(std::size_t i = 0; i < 10; ++i)
 	{
 		std::cout << "map[" << i << "] = " << m[i] << std::endl;
+	}*/
+
+	auto c = my_list<int, custom_allocator<int, 10>>();
+	for(std::size_t i = 0; i < 10; ++i)
+	{
+		c.add(i);
 	}
+
+	c.forEach([](const int& elem)
+	{
+		std::cout << elem << std::endl;
+	});
 
 	//------
 	//std::cout << std::endl << "*** end of main ***" << std::endl << std::endl;
