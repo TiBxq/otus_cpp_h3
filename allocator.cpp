@@ -116,6 +116,16 @@ public:
 	my_list() : m_first(nullptr)
 	{}
 
+	~my_list()
+	{
+		my_node* ptr = m_first;
+		while(ptr != nullptr)
+		{
+			m_allocator.destroy(ptr);
+			ptr = ptr->_next;
+		}
+	}
+
 	void add(T elem)
 	{
 		auto* newElem = m_allocator.allocate(1);
