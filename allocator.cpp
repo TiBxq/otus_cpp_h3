@@ -161,29 +161,58 @@ private:
 	node_allocator m_allocator;
 };
 
+int fact(int num)
+{
+	return num == 0 ? 1 : num * fact(num - 1);
+}
+
 int main(/*int argc, char const *argv[]*/)
 {
-	/*auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 10>>();
-	for(std::size_t i = 0; i < 10; ++i)
+	// std::map with default allocator
 	{
-		m[i] = i*i;
+		auto m = std::map<int, int>();
+		for(std::size_t i = 0; i < 10; ++i)
+		{
+			m[i] = fact(i);
+		}
 	}
 
-	for(std::size_t i = 0; i < 10; ++i)
+	// std::map with custom allocator
 	{
-		std::cout << "map[" << i << "] = " << m[i] << std::endl;
-	}*/
+		auto m = std::map<int, int, std::less<int>, custom_allocator<std::pair<const int, int>, 10>>();
+		for(std::size_t i = 0; i < 10; ++i)
+		{
+			m[i] = fact(i);
+		}
 
-	auto c = my_list<int, custom_allocator<int, 10>>();
-	for(std::size_t i = 0; i < 10; ++i)
-	{
-		c.add(i);
+		for(std::size_t i = 0; i < 10; ++i)
+		{
+			std::cout << i << " " << m[i] << std::endl;
+		}
 	}
 
-	c.forEach([](const int& elem)
+	// custom container with default allocator
 	{
-		std::cout << elem << std::endl;
-	});
+		auto c = my_list<int>();
+		for(std::size_t i = 0; i < 10; ++i)
+		{
+			c.add(i);
+		}
+	}
+
+	// custom container with custom allocator
+	{
+		auto c = my_list<int, custom_allocator<int, 10>>();
+		for(std::size_t i = 0; i < 10; ++i)
+		{
+			c.add(i);
+		}
+
+		c.forEach([](const int& elem)
+		{
+			std::cout << elem << std::endl;
+		});
+	}
 
 	//------
 	//std::cout << std::endl << "*** end of main ***" << std::endl << std::endl;
