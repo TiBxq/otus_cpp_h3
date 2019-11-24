@@ -7,7 +7,7 @@
 #include "custom_allocator.h"
 #include "my_list.h"
 
-/*TEST(allocator, std_list_with_custom_allocator)
+TEST(allocator, std_list_with_custom_allocator)
 {
 	std::list<std::string, custom_allocator<std::string, 3>> test_list;
 	test_list.emplace_back("one");
@@ -55,7 +55,7 @@ TEST(allocator, my_list_with_custom_allocator)
 	});
 
 	ASSERT_EQ(i, 3);
-}*/
+}
 
 int main(int argc, char *argv[])
 {
