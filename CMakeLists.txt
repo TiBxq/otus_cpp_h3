@@ -14,6 +14,11 @@ set_target_properties(allocator PROPERTIES
     CXX_STANDARD_REQUIRED ON 
 )
 
+set_target_properties(test_allocator PROPERTIES
+    CXX_STANDARD 14
+    CXX_STANDARD_REQUIRED ON 
+)
+
 target_include_directories(test_allocator
     PRIVATE
     ${GTEST_INCLUDE_DIRS}
