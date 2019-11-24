@@ -4,7 +4,7 @@
 #include <functional>
 #include <vector>
 
-#include "custom_allocator.h"
+/*#include "custom_allocator.h"
 #include "my_list.h"
 
 TEST(allocator, std_list_with_custom_allocator)
@@ -55,7 +55,7 @@ TEST(allocator, my_list_with_custom_allocator)
 	});
 
 	ASSERT_EQ(i, 3);
-}
+}*/
 
 int main(int argc, char *argv[])
 {
