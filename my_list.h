@@ -28,6 +28,7 @@ public:
 		while(ptr != nullptr)
 		{
 			m_allocator.destroy(ptr);
+			m_allocator.deallocate(ptr, 1);
 			ptr = ptr->_next;
 		}
 	}
