@@ -54,7 +54,7 @@ public:
 		}
 	}
 
-	void forEach(std::function<void(const T&)> func)
+	void forEach(const std::function<void(const T&)>& func)
 	{
 		my_node* ptr = m_first;
 		while(ptr != nullptr)
