@@ -19,13 +19,11 @@ struct custom_allocator
 		using other = custom_allocator<U, N>;
 	};
 
-	custom_allocator()
+	custom_allocator() : m_memory(nullptr), m_index(0)
 	{
 #ifdef ENABLE_LOGGING
 		std::cout << "ctor " << typeid(T).name() << std::endl;
 #endif
-		m_memory = reinterpret_cast<T*>(std::malloc(sizeof(T) * N));
-		m_index = 0;
 	}
 
 	~custom_allocator()
@@ -49,6 +47,11 @@ struct custom_allocator
 #ifdef ENABLE_LOGGING
 		std::cout << "allocate: [n = " << n << "] " << typeid(T).name() << std::endl;
 #endif
+		if(m_memory == nullptr)
+		{
+			m_memory = reinterpret_cast<T*>(std::malloc(sizeof(T) * N));
+		}
+
 		auto p = m_memory + m_index;
 		m_index += n;
 		return p;
